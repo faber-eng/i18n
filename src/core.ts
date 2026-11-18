@@ -64,6 +64,17 @@ function prefixOf(locale: string, meta: LocaleMeta): string {
 	return prefix;
 }
 
+function assertValidSlug(slug: string, page: string, locale: string): void {
+	if (slug === "/") return;
+	const valid =
+		slug.startsWith("/") && !slug.endsWith("/") && !slug.includes("//");
+	if (!valid) {
+		throw new Error(
+			`i18n: slug "${slug}" of page "${page}" in locale "${locale}" must start with "/", not end with "/" and not contain "//"`,
+		);
+	}
+}
+
 function joinPath(prefix: string, slug: string): string {
 	if (slug === "/") return prefix === "" ? "/" : prefix;
 	return `${prefix}${slug}`;
@@ -102,6 +113,7 @@ export function defineI18n<
 		const slugs = new Map<string, P>();
 		for (const page of pages) {
 			const slug = config.pages[page][locale];
+			assertValidSlug(slug, page, locale);
 			const taken = slugs.get(slug);
 			if (taken !== undefined) {
 				throw new Error(

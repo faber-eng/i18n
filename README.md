@@ -136,7 +136,8 @@ it("every locale has the default locale's shape", () => {
 | --- | --- | --- |
 | A page or locale argument is one of the configured values | yes | no |
 | Every page has a slug for every locale | yes | no |
-| A slug starts with `/` | yes | no |
+| A slug starts with `/` | yes | `defineI18n` throws at startup |
+| A slug other than `/` does not end with `/` and has no `//` | no | `defineI18n` throws at startup |
 | `defaultLocale` is one of the locales | yes | no |
 | A locale is missing a key that the default locale has | yes (in `defineI18n` and with `Messages<typeof default>`) | `expectSameShape` |
 | A locale has a key the default locale lacks | with `Messages<typeof default>` on that locale's file; `defineI18n` does not catch it | `expectSameShape` |
