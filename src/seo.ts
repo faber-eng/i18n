@@ -84,6 +84,15 @@ export function alternateLinks<L extends string, P extends string>(
 	return links;
 }
 
+function escapeXml(value: string): string {
+	return value
+		.replaceAll("&", "&amp;")
+		.replaceAll("<", "&lt;")
+		.replaceAll(">", "&gt;")
+		.replaceAll('"', "&quot;")
+		.replaceAll("'", "&apos;");
+}
+
 function sitemapAlternates<L extends string, P extends string>(
 	i18n: SeoSource<L, P>,
 	siteUrl: string,
@@ -92,7 +101,7 @@ function sitemapAlternates<L extends string, P extends string>(
 	return alternateLinks(i18n, siteUrl, page)
 		.map(
 			(link) =>
-				`\t\t<xhtml:link rel="alternate" hreflang="${link.hrefLang}" href="${link.href}" />`,
+				`\t\t<xhtml:link rel="alternate" hreflang="${escapeXml(link.hrefLang ?? "")}" href="${escapeXml(link.href)}" />`,
 		)
 		.join("\n");
 }
@@ -105,7 +114,7 @@ function sitemapEntry<L extends string, P extends string>(
 	options: Required<SitemapOptions>,
 ): string {
 	return `\t<url>
-\t\t<loc>${pageUrl(i18n, siteUrl, page, locale)}</loc>
+\t\t<loc>${escapeXml(pageUrl(i18n, siteUrl, page, locale))}</loc>
 ${sitemapAlternates(i18n, siteUrl, page)}
 \t\t<changefreq>${options.changefreq}</changefreq>
 \t\t<priority>${options.priority}</priority>

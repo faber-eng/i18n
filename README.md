@@ -148,6 +148,7 @@ it("every locale has the default locale's shape", () => {
 | A prefix starts with `/` and does not end with `/` | no | `defineI18n` throws at startup |
 | Two locales have equal or nested prefixes, such as `/en` and `/en/gb` (`/en` and `/enx` are fine) | no | `defineI18n` throws at startup |
 | An empty object `{}` is present in one locale and not the other | no | `expectSameShape` |
+| `sitemapXml` values contain `&`, `<`, `>` or quotes | no | escaped in `loc`, `href` and `hreflang` |
 | A leaf is an empty string | no | `expectSameShape` |
 | A pathname segment is unknown | no | `pageFromPathname` falls back to the `/` page |
 | A route file exists for each page and locale | no | no (your router decides) |

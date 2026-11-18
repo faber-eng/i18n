@@ -67,6 +67,13 @@ describe("sitemapXml", () => {
 		expect(xml).toBe(GOLDEN_SITEMAP);
 	});
 
+	it("escapes XML special characters in loc and href values", () => {
+		const escaped = sitemapXml(i18n, "https://example.com/?a=1&b=2");
+		expect(escaped).toContain("<loc>https://example.com/?a=1&amp;b=2/</loc>");
+		expect(escaped).toContain('href="https://example.com/?a=1&amp;b=2/en"');
+		expect(escaped).not.toMatch(/&(?!amp;)/);
+	});
+
 	it("takes changefreq and priority from the options", () => {
 		const custom = sitemapXml(i18n, SITE, {
 			changefreq: "daily",
