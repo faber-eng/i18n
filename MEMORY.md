@@ -21,3 +21,7 @@ Source: fabrica-landing `memory/2026-09-07-root-head-has-no-locale.md`. A root `
 ## 2026-11-18 · The root page is the page whose default-locale slug is `/`
 
 `pageFromPathname` falls back to it for an unknown segment. `defineI18n` throws at startup when no page has that slug, so the fallback cannot be undefined.
+
+## 2026-11-18 · Slugs and prefixes are checked at runtime so path matching stays unambiguous
+
+`defineI18n` throws when a slug other than `/` ends with `/` or contains `//`, and when two non-default locales have equal or nested prefixes (`/en` and `/en/gb`; `/en` and `/enx` are fine). The type `` `/${string}` `` cannot express either rule. `/a/` built `/en/a/`, which `pageFromPathname` strips back to `/a` and no longer matches, so the page fell back to home. With `/en` and `/en/gb`, `localeFromPathname` returns the first match, so the nested locale is unreachable. The default locale has no prefix and is excluded from the prefix check.
