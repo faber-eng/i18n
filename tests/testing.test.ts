@@ -58,3 +58,19 @@ describe("expectSameShape", () => {
 		expect(() => expectSameShape({ id: base }, "en")).toThrow();
 	});
 });
+
+describe("empty objects", () => {
+	it("makes an empty-object leaf visible in the signature", () => {
+		expect(shapeSignature({ a: {} })).not.toEqual(shapeSignature({}));
+	});
+
+	it("fails when one locale has an empty object the default lacks", () => {
+		expect(() => expectSameShape({ id: {}, en: { a: {} } }, "id")).toThrow();
+	});
+
+	it("passes when both have the empty object", () => {
+		expect(() =>
+			expectSameShape({ id: { a: {} }, en: { a: {} } }, "id"),
+		).not.toThrow();
+	});
+});
