@@ -13,9 +13,6 @@
 		"url": "https://github.com/faber-eng/i18n/issues"
 	},
 	"homepage": "https://github.com/faber-eng/i18n#readme",
-	"engines": {
-		"node": "^22.18.0 || ^24.11.0 || >=26.0.0"
-	},
 	"files": [
 		"dist",
 		"README.md",
