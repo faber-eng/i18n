@@ -134,13 +134,15 @@ it("every locale has the default locale's shape", () => {
 
 | Rule | Compile time | Runtime |
 | --- | --- | --- |
-| A page or locale argument is one of the configured values | yes | no |
+| A page or locale argument is one of the configured values | yes, when `locales` keeps its literal keys (see below) | no |
 | Every page has a slug for every locale | yes | no |
 | A slug starts with `/` | yes | `defineI18n` throws at startup |
 | A slug other than `/` does not end with `/` and has no `//` | no | `defineI18n` throws at startup |
 | `defaultLocale` is one of the locales | yes | no |
 | A locale is missing a key that the default locale has | yes (in `defineI18n` and with `Messages<typeof default>`) | `expectSameShape` |
 | A locale has a key the default locale lacks | with `Messages<typeof default>` on that locale's file; `defineI18n` does not catch it | `expectSameShape` |
+| A key in `messages` is not in `locales` | no | no |
+| A locale in a `pages` slug map is not in `locales` | yes | no |
 | A leaf has the wrong type, such as `string[]` for `string` | yes | no |
 | Array lengths match | no | `expectSameShape` |
 | Two pages share a slug in one locale | no | `defineI18n` throws at startup |
@@ -152,6 +154,11 @@ it("every locale has the default locale's shape", () => {
 | A leaf is an empty string | no | `expectSameShape` |
 | A pathname segment is unknown | no | `pageFromPathname` falls back to the `/` page |
 | A route file exists for each page and locale | no | no (your router decides) |
+
+Two accuracy notes:
+
+- A locale key in `messages` that is not in `locales` is not rejected at compile time. An extra locale in a `pages` slug map is.
+- If `locales` is typed as a widened `Record<string, LocaleMeta>`, every page and locale check collapses to `string`. Declare the config inline or with `as const`.
 
 Annotate each non-default locale file with `Messages<typeof default>`, as in the example. Without the annotation a locale with an extra key passes the compiler.
 
