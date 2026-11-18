@@ -1,0 +1,74 @@
+{
+	"name": "@faber-eng/i18n",
+	"version": "0.1.0",
+	"description": "Type-safe i18n for Faber sites: locales, per-locale page slugs, hreflang and sitemap helpers, and a typed React provider.",
+	"license": "MIT",
+	"type": "module",
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/faber-eng/i18n.git"
+	},
+	"bugs": {
+		"url": "https://github.com/faber-eng/i18n/issues"
+	},
+	"homepage": "https://github.com/faber-eng/i18n#readme",
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./react": {
+			"types": "./dist/react.d.ts",
+			"import": "./dist/react.js"
+		},
+		"./seo": {
+			"types": "./dist/seo.d.ts",
+			"import": "./dist/seo.js"
+		},
+		"./testing": {
+			"types": "./dist/testing.d.ts",
+			"import": "./dist/testing.js"
+		}
+	},
+	"scripts": {
+		"build": "tsdown",
+		"dev": "tsdown --watch",
+		"test": "vitest run --typecheck",
+		"lint": "biome lint",
+		"check": "biome check",
+		"typecheck": "tsc --noEmit",
+		"prepublishOnly": "bun run test && bun run build"
+	},
+	"peerDependencies": {
+		"react": "^19.0.0",
+		"vitest": ">=2.0.0"
+	},
+	"peerDependenciesMeta": {
+		"react": {
+			"optional": true
+		},
+		"vitest": {
+			"optional": true
+		}
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.6.8",
+		"@types/node": "^26.6.6",
+		"@types/react": "^19.3.0",
+		"@types/react-dom": "^19.3.0",
+		"react": "^19.3.1",
+		"react-dom": "^19.3.1",
+		"tsdown": "^0.23.7",
+		"typescript": "^7.0.2",
+		"vitest": "^5.1.1"
+	}
+}
