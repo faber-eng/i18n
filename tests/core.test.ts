@@ -168,3 +168,37 @@ describe("locale metadata", () => {
 		expect(i18n.ogLocale("en")).toBe("en_US");
 	});
 });
+
+describe("slug validation", () => {
+	function withSlug(slug: `/${string}`) {
+		return () =>
+			defineI18n({
+				locales,
+				defaultLocale: "id",
+				pages: {
+					home: { id: "/", en: "/" },
+					other: { id: slug, en: slug },
+				},
+				messages: { id, en },
+			});
+	}
+
+	it.each(["/a/", "//", "/a//b"] as const)("throws on slug %s", (slug) => {
+		expect(withSlug(slug)).toThrow(/slug/);
+	});
+
+	it.each(["/a", "/a/b"] as const)("accepts slug %s", (slug) => {
+		expect(withSlug(slug)).not.toThrow();
+	});
+
+	it("accepts the root slug", () => {
+		expect(() =>
+			defineI18n({
+				locales,
+				defaultLocale: "id",
+				pages: { home: { id: "/", en: "/" } },
+				messages: { id, en },
+			}),
+		).not.toThrow();
+	});
+});
