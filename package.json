@@ -23,20 +23,20 @@
 	},
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs"
 		},
 		"./react": {
-			"types": "./dist/react.d.ts",
-			"import": "./dist/react.js"
+			"types": "./dist/react.d.mts",
+			"import": "./dist/react.mjs"
 		},
 		"./seo": {
-			"types": "./dist/seo.d.ts",
-			"import": "./dist/seo.js"
+			"types": "./dist/seo.d.mts",
+			"import": "./dist/seo.mjs"
 		},
 		"./testing": {
-			"types": "./dist/testing.d.ts",
-			"import": "./dist/testing.js"
+			"types": "./dist/testing.d.mts",
+			"import": "./dist/testing.mjs"
 		}
 	},
 	"scripts": {
