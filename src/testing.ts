@@ -13,7 +13,9 @@ function collectShape(value: unknown, path: string, out: string[]): void {
 		return;
 	}
 	if (isRecord(value)) {
-		for (const [key, child] of Object.entries(value)) {
+		const entries = Object.entries(value);
+		if (entries.length === 0) out.push(`${path}{}`);
+		for (const [key, child] of entries) {
 			collectShape(child, `${path}.${key}`, out);
 		}
 		return;
