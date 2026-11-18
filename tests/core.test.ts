@@ -202,3 +202,32 @@ describe("slug validation", () => {
 		).not.toThrow();
 	});
 });
+
+describe("prefix conflicts", () => {
+	function withPrefixes(enPrefix: string, gbPrefix: string) {
+		return () =>
+			defineI18n({
+				locales: {
+					id: locales.id,
+					en: { ...locales.en, prefix: enPrefix },
+					gb: { htmlLang: "en-GB", ogLocale: "en_GB", prefix: gbPrefix },
+				},
+				defaultLocale: "id",
+				pages: { home: { id: "/", en: "/", gb: "/" } },
+				messages: { id, en, gb: en },
+			});
+	}
+
+	it("throws on equal prefixes", () => {
+		expect(withPrefixes("/en", "/en")).toThrow(/prefix/);
+	});
+
+	it("throws when one prefix nests inside the other", () => {
+		expect(withPrefixes("/en", "/en/gb")).toThrow(/prefix/);
+		expect(withPrefixes("/en/gb", "/en")).toThrow(/prefix/);
+	});
+
+	it("accepts prefixes that only share leading characters", () => {
+		expect(withPrefixes("/en", "/enx")).not.toThrow();
+	});
+});

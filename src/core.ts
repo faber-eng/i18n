@@ -75,6 +75,23 @@ function assertValidSlug(slug: string, page: string, locale: string): void {
 	}
 }
 
+function prefixesConflict(a: string, b: string): boolean {
+	return a === b || a.startsWith(`${b}/`) || b.startsWith(`${a}/`);
+}
+
+function assertNoPrefixConflicts(prefixes: ReadonlyMap<string, string>): void {
+	const entries = [...prefixes].filter(([, prefix]) => prefix !== "");
+	for (const [index, [locale, prefix]] of entries.entries()) {
+		for (const [other, otherPrefix] of entries.slice(index + 1)) {
+			if (prefixesConflict(prefix, otherPrefix)) {
+				throw new Error(
+					`i18n: prefix "${prefix}" of locale "${locale}" conflicts with prefix "${otherPrefix}" of locale "${other}"`,
+				);
+			}
+		}
+	}
+}
+
 function joinPath(prefix: string, slug: string): string {
 	if (slug === "/") return prefix === "" ? "/" : prefix;
 	return `${prefix}${slug}`;
@@ -99,6 +116,7 @@ export function defineI18n<
 			isDefault ? "" : prefixOf(locale, config.locales[locale]),
 		);
 	}
+	assertNoPrefixConflicts(prefixes);
 
 	function prefixFor(locale: L): string {
 		const prefix = prefixes.get(locale);

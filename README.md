@@ -146,6 +146,7 @@ it("every locale has the default locale's shape", () => {
 | Two pages share a slug in one locale | no | `defineI18n` throws at startup |
 | A page uses the slug `/` in the default locale | no | `defineI18n` throws at startup |
 | A prefix starts with `/` and does not end with `/` | no | `defineI18n` throws at startup |
+| Two locales have equal or nested prefixes, such as `/en` and `/en/gb` (`/en` and `/enx` are fine) | no | `defineI18n` throws at startup |
 | A leaf is an empty string | no | `expectSameShape` |
 | A pathname segment is unknown | no | `pageFromPathname` falls back to the `/` page |
 | A route file exists for each page and locale | no | no (your router decides) |
